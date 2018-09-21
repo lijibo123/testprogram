@@ -1,9 +1,8 @@
 import os
 import time
 import re
-
 '''
-print(os.path.getsize('D://nlp//noword.txt'))
+print(os.path.getsize('D://nlp//noword.txt')) but GitHub does not provide shell access.
 #fp = open("D://nlp//noword.txt")
 #frl = fp.readline()
 #sdd = re.search(r'.*国',frl.strip('\n'))
@@ -35,3 +34,11 @@ for file in fp.readlines():
      #print(con)
 fp.close()
 fp1.close()
+'''
+# 此部分添加了有关时间测试的函数
+import time
+start_time = time.time()
+pass
+end_time = time.time()
+print(end_time - start_time)
+'''
