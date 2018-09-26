@@ -42,3 +42,18 @@ pass
 end_time = time.time()
 print(end_time - start_time)
 '''
+# 该部分为自定义字段中的数据预处理部分的程序
+import pickle
+import os
+import pandas as pd
+import re
+pattern = re.compile(r'(\（(.*)\）)|(\d.*$)|(\((.*)\))') #匹配模式有三种，名字后有中文括号、英文括号、数字及数字和字母
+df = pd.read_excel('D://program file//user.xlsx') # 所有名字集合的读取
+allname = df['real_name']
+listname = []
+setname = set(allname) # 基于集合去除名字存在的重复情况。
+for na in setname:
+    midstr = pattern.sub('', na)
+    listname.append(midstr)
+setname = set(listname) # 二次去重
+pickle.dump(setname,open(os.path.join(os.getcwd(),'x'),'wb')) # 存储以备用
