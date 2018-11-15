@@ -8,7 +8,6 @@ import pickle
 import time
 
 # 提取图片的类型
-#fname = sys.argv[1]
 def img_read(fname):
     """
     :param fname:
@@ -73,7 +72,7 @@ def img_cut(img, path, file_name, stor_list):
             # 文件名提取、文件保存
             (img_name, extension) = os.path.splitext(file_name)
             if lenth == 1:
-                with open(os.getcwd()+'single_img_info.txt','a') as singlefile:
+                with open(os.getcwd()+'single_img_info.txt','a') as singlefile: #根据文件名进行测试文件
                     singlefile.write(file_name+','+tag+','+confi)
             if lenth > 1:
                 img_id = "%02d" % i  # 数字格式化输出
@@ -90,7 +89,7 @@ def img_cut(img, path, file_name, stor_list):
 
 if __name__ == "__main__":
 
-    with open(os.getcwd(),'a') as csvfile:
+    with open(os.getcwd(),'a') as csvfile: # 创建新的文件头
         csvfile.write('img_name,'+'tag,'+'confidence')
 
     path = "D:/graph/"  # 图片的存储位置
