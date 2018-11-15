@@ -22,8 +22,8 @@ def img_read(fname):
            'file': image_64_encode
          }
 
-    r = requests.post('http://localhost:9001/ticket/classify', data=files)
-    #print(r.json)
+    r = requests.post('http://172.31.2.49:9001/ticket/classify', data=files)
+    print(r.text)
     con = json.loads(r.text)
     image.close()
     # 返回数据
@@ -41,7 +41,7 @@ def img_size_chang(min, max,length):
     return int(min_), int(max_)
 
 # 图片切割
-def img_cut(img, path, file, stor_list):
+def img_cut(img, path, file_name, stor_list):
 
     """
     :param img:
@@ -53,7 +53,7 @@ def img_cut(img, path, file, stor_list):
     image = cv2.imread(path)
     height, weight = image.shape[:2]
 
-    sta = img['status'] # 判断状态码
+    sta = img['status']['boxes']# 判断状态码
     lenth = len(img['data'])
     # 异常处理
     try:
@@ -71,34 +71,40 @@ def img_cut(img, path, file, stor_list):
             mid_img =image[y_min:y_max, x_min:x_max]
 
             # 文件名提取、文件保存
-            (file_name, extension) = os.path.splitext(file)
-            img_id = "%02d" % i  # 数字格式化输出
-            record = file_name + img_id + extension  # 注意将数字转化为字符串
-            stor_list.append({'img_name':record,'img_tag':tag,'img_confi':confi})
-            # 保存切割后的图片
-            cv2.imwrite(pat + file_name + img_id + extension, mid_img)
-            i = i+1
+            (img_name, extension) = os.path.splitext(file_name)
+            if lenth == 1:
+                with open(os.getcwd()+'single_img_info.txt','a') as singlefile:
+                    singlefile.write(file_name+','+tag+','+confi)
+            if lenth > 1:
+                img_id = "%02d" % i  # 数字格式化输出
+                record = img_name + img_id + extension  # 注意将数字转化为字符串
+                stor_list.append({'img_name':record,'img_tag':tag,'img_confi':confi})
+                # 保存切割后的图片
+                cv2.imwrite(pat + img_name + img_id + extension, mid_img)
+                i = i+1
     except:
-      return ("Error happend!")
+        return ("Error happend!")
 
     else:
       return ("ok!")
 
 if __name__ == "__main__":
 
+    with open(os.getcwd(),'a') as csvfile:
+        csvfile.write('img_name,'+'tag,'+'confidence')
+
     path = "D:/graph/"  # 图片的存储位置
     store_path = "E:/temp/record.txt" # 这是pickle文件的存储位置
 
     store_list = []
-    store_dic = {}
+
     # 这里需要进行批量处理
-    for file in os.listdir(path):
-        content = img_read(path + file)
+    for file_name in os.listdir(path):
+        content = img_read(path + file_name)
         time.sleep(1)
-        sta = img_cut(content, path + file, file, store_list)
-    stor_dic = {'img_info': stor_list}
+        sta = img_cut(content, path + file_name, file_name, store_list)
 
     # 将数据保存为pickle类型文件
     with open(store_path, 'wb') as f:
-        pickle.dump(stor_dic, f)
+        pickle.dump(stor_list, f)
     print(sta)
