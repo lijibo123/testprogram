@@ -21,7 +21,7 @@ def img_read(fname):
            'file': image_64_encode
          }
 
-    r = requests.post('http://172.31.2.49:9001/ticket/classify', data=files)
+    r = requests.post('http://*.*.*.*:9001/ticket/classify', data=files)
     print(r.text)
     con = json.loads(r.text)
     image.close()
