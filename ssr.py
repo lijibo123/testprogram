@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 
 # dc = cv2.min(cv2.min(r,g),b)
 # img_r = cv2.GaussianBlur(r, (11, 11), 0)
-# danjn
 def singleScaleRectinex(img,sigma):
     temp = cv2.GaussianBlur(img, (0,0), sigma)
     gaussian = np.where(temp == 0, 0.1, temp)
