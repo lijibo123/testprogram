@@ -2,6 +2,7 @@
 import tensorflow as tf
 import numpy as ny
 
+# 这个是 Tesorflow的一个测试程序情况
 #node1 = tf.constant([-.3,4.0], tf.float32)
 #node2 = tf.constant(4.0)
 #node3 = tf.square(node2) #node1+node2 #tf.add(node1, node2)
